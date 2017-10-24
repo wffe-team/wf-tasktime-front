@@ -1,8 +1,5 @@
 <template>
   <div class="bodyCss">
-    <input class="form-control" id="inputEmail3" placeholder="请输入账号" v-model="account">
-	<input type="password" class="form-control" id="inputPassword3" placeholder="请输入密码" v-model="password">
-	<button type="submit" class="btn btn-default" @click="login">登录</button>
 	<el-form :model="loginForm"
                  :rules="loginRule"
                  ref="loginForm"
@@ -70,17 +67,14 @@ export default {
 	                	this.$http.post('/api/login/createAccount', para).then((data) => {
 	                		localStorage.setItem('access-user', JSON.stringify(data.data));
 	                		this.logining = false;
+	                		this.$router.push({ path: '/' });
 	                	});
 	                }else{
 	                	this.logining = false;
 	                	localStorage.setItem('access-user', JSON.stringify(dataSet));
+	                	this.$router.push({ path: '/' });
+	                	console.log(this.$router.push);
 	                }
-	            }).catch(function (response) {
-	                that.$message({
-	                    message: '用户名或密码错误',
-	                    type: 'error'
-	                });
-	                that.logining = false;
 	            })
 	        }
 	     });
