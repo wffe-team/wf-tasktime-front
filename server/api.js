@@ -119,4 +119,68 @@ router.put('/api/project/changeProject',(req,res) => {
 	    }  
 	});  
 });
+
+
+//查询部门列表
+router.get('/api/project/getDepartment',(req,res) => {
+	//console.log(req.body);
+	var model = req.body
+	//console.log(model);
+    // 通过模型去查找数据库
+    models.projectInfos.distinct('departmentName',(err,data) => {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+        	if(!!data){
+        		console.log(data);
+        		res.json(data);
+        	}else{
+        		res.json('none');
+        	}
+        }
+    });
+});
+// 创建部门
+router.post('/api/project/createDepartment',(req,res) => {
+	let newProject = new models.projectInfos({
+        departmentName : req.body.departmentName,
+        projectFirstName : req.body.projectFirstName,
+        projectSecondName: req.body.projectSecondName,
+    });
+    console.log(newProject);
+    // 保存数据newAccount数据进mongoDB
+    newProject.save((err,data) => {
+        if (err) {
+            res.json(err);
+        } else {
+            res.json(newProject);
+        }
+    });
+});
+//查询部门对应下的一级项目
+router.get('/api/project/getProjectFirst',(req,res) => {
+	console.log(req.query);
+    let department = req.query.department;
+    console.log(department);
+    // 通过模型去查找数据库
+    models.projectInfos.distinct('projectFirstName',{
+    	departmentName:department,
+    	projectFirstName:{
+    		$ne:''
+    	}
+    },(err,data) => {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+        	if(!!data){
+        		console.log(data);
+        		res.json(data);
+        	}else{
+        		res.json('none');
+        	}
+        }
+    });
+});
 module.exports = router;

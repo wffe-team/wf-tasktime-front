@@ -43,14 +43,42 @@ var mandaySchema = new mongoose.Schema(
     }
 );
 
+/**
+ * 工时记录
+ */
+var workLogSchema = new mongoose.Schema(
+    {
+        id: mongoose.Schema.Types.ObjectId,
+        member: [mongoose.Schema.Types.Mixed],
+        projectInfo: [mongoose.Schema.Types.Mixed],
+        date: Date,
+        workDays: Number        
+    }
+);
+
+/**
+ * 部门、产品
+ */
+var projectInfoSchema = new mongoose.Schema(
+    {
+        departmentName: String,
+        projectFirstName: String,
+        projectSecondName: String,
+    }
+);
+
 /************** 定义模型Model **************/
 const Models = {
     projectSchema: projectSchema,
     memberSchema: memberSchema,
     mandaySchema: mandaySchema,
+    workLogSchema: workLogSchema,
+    projectInfoSchema: projectInfoSchema,
     projects: mongoose.model("projects", projectSchema),
     members: mongoose.model("members", memberSchema),
-    mandays: mongoose.model("mandays", mandaySchema)
+    mandays: mongoose.model("mandays", mandaySchema),
+    workLogs: mongoose.model("workLogs", workLogSchema),
+    projectInfos: mongoose.model("projectInfos", projectInfoSchema),
 };
 
 module.exports = Models;

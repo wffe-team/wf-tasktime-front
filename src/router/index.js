@@ -5,6 +5,7 @@ import Home from '@/components/Home'
 import Dashboard from '@/components/Dashboard'
 
 import UserList from '@/components/user/list'
+import projectList from '@/components/project/list'
 Vue.use(Router)
 
 let router = new Router({
@@ -38,17 +39,16 @@ let router = new Router({
         {path: '/user/list', component: UserList, name: '个人工时', menuShow: true}
       ]
     },
-    // {
-      // path: '/',
-      // component: Home,
-      // name: '图书管理',
-      // menuShow: true,
-      // iconCls: 'iconfont icon-books',
-      // children: [
-        // {path: '/book/list', component: BookList, name: '图书列表', menuShow: true},
-        // {path: '/book/category', component: BookCategoryList, name: '图书分类', menuShow: true}
-      // ]
-    // },
+    {
+      path: '/',
+      component: Home,
+      name: '项目管理',
+      menuShow: true,
+      iconCls: 'iconfont icon-books',
+      children: [
+        {path: '/book/list', component: projectList, name: '项目列表', menuShow: true},
+      ]
+    },
     // {
       // path: '/',
       // component: Home,
