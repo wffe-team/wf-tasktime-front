@@ -160,13 +160,36 @@ router.post('/api/project/createDepartment',(req,res) => {
 });
 //查询部门对应下的一级项目
 router.get('/api/project/getProjectFirst',(req,res) => {
-	console.log(req.query);
     let department = req.query.department;
-    console.log(department);
     // 通过模型去查找数据库
     models.projectInfos.distinct('projectFirstName',{
     	departmentName:department,
     	projectFirstName:{
+    		$ne:''
+    	}
+    },(err,data) => {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+        	if(!!data){
+        		console.log(data);
+        		res.json(data);
+        	}else{
+        		res.json('none');
+        	}
+        }
+    });
+});
+//查询部门和一级项目对应下的二级项目
+router.get('/api/project/getProjectSecond',(req,res) => {
+    let department = req.query.department;
+    let projectFirstName = req.query.projectFirstName;
+    // 通过模型去查找数据库
+    models.projectInfos.distinct('projectSecondName',{
+    	departmentName:department,
+    	projectFirstName:projectFirstName,
+    	projectSecondName:{
     		$ne:''
     	}
     },(err,data) => {

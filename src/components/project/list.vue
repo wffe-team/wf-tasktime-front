@@ -16,7 +16,7 @@
         <el-select
 	      v-model="form.departmentName"
 	      filterable
-	      @change="handleChange"
+	      @change="handleChange('department')"
 	      allow-create
 	      placeholder="请选择部门">
 	      <el-option
@@ -31,7 +31,7 @@
         <el-select
 	      v-model="form.projectFirstName"
 	      filterable
-	      @change="handleChange"
+	      @change="handleChange('projectFirst')"
 	      allow-create
 	      placeholder="请选择一级项目">
 	      <el-option
@@ -46,7 +46,6 @@
         <el-select
 	      v-model="form.projectSecondName"
 	      filterable
-	      @change="handleChange"
 	      allow-create
 	      placeholder="请选择二级项目">
 	      <el-option
@@ -83,9 +82,13 @@
       }
     },
     methods: {
-      handleChange(){
-        //获取一级项目
-        this.getProjectFirst();
+      handleChange(val){
+        if(val=='department'){
+          //获取一级项目
+          this.getProjectFirst();
+        }else if(val=='projectFirst'){
+          this.getProjectSecond();
+        }
       },
       makeSure(){
         this.$refs.form.validate((valid) => {
@@ -108,6 +111,20 @@
           this.projectFirstList=[];
           datas.forEach(item=>{
             this.projectFirstList.push({
+              value:item,
+              label:item,
+            });
+          });
+    	});
+      },
+      getProjectSecond(){
+        let departmentName=this.form.departmentName;
+        let projectFirstName=this.form.projectFirstName;
+        this.$http.get('/api/project/getProjectSecond?department='+departmentName+'&projectFirstName='+projectFirstName).then((data) => {
+          let datas=data.data;
+          this.projectSecondList=[];
+          datas.forEach(item=>{
+            this.projectSecondList.push({
               value:item,
               label:item,
             });
