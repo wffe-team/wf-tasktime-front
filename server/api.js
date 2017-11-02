@@ -120,7 +120,23 @@ router.put('/api/project/changeProject',(req,res) => {
 	});  
 });
 
-
+//查询用户列表
+router.get('/api/user/getUserList',(req,res) => {
+    // 通过模型去查找数据库
+    models.members.distinct('account',(err,data) => {
+        if (err) {
+            res.json(err);
+            console.log(err);
+        } else {
+        	if(!!data){
+        		console.log(data);
+        		res.json(data);
+        	}else{
+        		res.json('none');
+        	}
+        }
+    });
+});
 //查询部门列表
 router.get('/api/project/getDepartment',(req,res) => {
 	//console.log(req.body);
@@ -185,17 +201,147 @@ router.get('/api/project/getProjectFirst',(req,res) => {
 router.get('/api/project/getProjectSecond',(req,res) => {
     let department = req.query.department;
     let projectFirstName = req.query.projectFirstName;
+    let query={};
+    if(req.query.department&&req.query.projectFirstName){
+    	query={
+	    	departmentName:department,
+	    	projectFirstName:projectFirstName,
+	    	projectSecondName:{
+	    		$ne:''
+	    	}
+	    }
+    }else{
+    	query={
+	    	projectSecondName:{
+	    		$ne:''
+	    	}
+	    }
+    }
     // 通过模型去查找数据库
-    models.projectInfos.distinct('projectSecondName',{
-    	departmentName:department,
-    	projectFirstName:projectFirstName,
-    	projectSecondName:{
-    		$ne:''
-    	}
-    },(err,data) => {
+    models.projectInfos.distinct('projectSecondName',query,(err,data) => {
         if (err) {
             res.json(err);
             console.log(err);
+        } else {
+        	if(!!data){
+        		console.log(data);
+        		res.json(data);
+        	}else{
+        		res.json('none');
+        	}
+        }
+    });
+});
+// 创建工时
+router.post('/api/project/createWorkLog',(req,res) => {
+	let newWorkLog = new models.workLogs({
+        member: req.body.member,
+        projectInfo: req.body.projectInfo,
+        dateRange: req.body.dateRange,
+        workDays: req.body.workDays,
+    });
+    console.log(newWorkLog);
+    // 保存数据newWorkLog数据进mongoDB
+    newWorkLog.save((err,data) => {
+        if (err) {
+            res.json(err);
+        } else {
+            res.json(newWorkLog);
+        }
+    });
+});
+//查询项目部门对应关系列表
+router.get('/api/project/departmentList',(req,res) => {
+	let departmentList=[];
+	let count=0;
+	let countS=0;
+	let mark=true;
+    // 通过模型去查找数据库
+    models.projectInfos.distinct('departmentName',(err,data) => {
+        if (err) {
+            res.json(err);
+        } else {
+        	if(!!data){
+        		data.forEach(item=>{
+        			departmentList.push({
+        				departmentName:item,
+        				childProjects:[]
+        			})
+        		});
+        		departmentList.forEach(item=>{
+        			models.projectInfos.distinct('projectFirstName',{
+				    	departmentName:item.departmentName,
+				    	projectFirstName:{
+				    		$ne:''
+				    	}
+				    },(err,data) => {
+				        if (err) {
+				            res.json(err);
+				            console.log(err);
+				        } else {
+				        	if(!!data){
+				        		data.forEach(items=>{
+				        			item.childProjects.push({
+				        				projectFirstName:items,
+				        				childProjects:[]
+				        			})
+				        		});
+				        		item.childProjects.forEach(items=>{
+				        			models.projectInfos.distinct('projectSecondName',{
+								    	departmentName:item.departmentName,
+								    	projectFirstName:items.projectFirstName,
+								    	projectSecondName:{
+								    		$ne:''
+								    	}
+								    },(err,data) => {
+								        if (err) {
+								            res.json(err);
+								            console.log(err);
+								        } else {
+								        	if(!!data){
+								        		data.forEach(itemss=>{
+								        			items.childProjects.push({
+								        				projectSecondName:itemss,
+								        			})
+								        		});
+								        		count++;
+								        		function test(){
+													setTimeout(()=>{
+									        			if(count==countS&&mark){
+									        				res.json(departmentList);
+									        				mark=false;
+									        			}else{
+									        				countS=count;
+									        				test();
+									        			}
+								        			},10);
+												}
+								        		test();
+								        	}else{
+								        		res.json('none');
+								        	}
+								        }
+								    });
+				        		});
+				        	}else{
+				        		res.json('none');
+				        	}
+				        }
+				    });
+        		});
+        	}else{
+        		res.json('none');
+        	}
+        }
+    });
+});
+//查询项目工时列表
+router.get('/api/project/workLogList',(req,res) => {
+	
+    // 通过模型去查找数据库
+    models.workLogs.find({},(err,data) => {
+        if (err) {
+            res.json(err);
         } else {
         	if(!!data){
         		console.log(data);

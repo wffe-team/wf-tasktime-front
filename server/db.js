@@ -51,7 +51,7 @@ var workLogSchema = new mongoose.Schema(
         id: mongoose.Schema.Types.ObjectId,
         member: [mongoose.Schema.Types.Mixed],
         projectInfo: [mongoose.Schema.Types.Mixed],
-        date: Date,
+        dateRange: [Date],
         workDays: Number        
     }
 );

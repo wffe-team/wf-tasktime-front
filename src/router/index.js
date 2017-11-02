@@ -6,6 +6,7 @@ import Dashboard from '@/components/Dashboard'
 
 import UserList from '@/components/user/list'
 import projectList from '@/components/project/list'
+import WorkLogList from '@/components/worklog/list'
 Vue.use(Router)
 
 let router = new Router({
@@ -46,20 +47,10 @@ let router = new Router({
       menuShow: true,
       iconCls: 'iconfont icon-books',
       children: [
-        {path: '/book/list', component: projectList, name: '项目列表', menuShow: true},
+        {path: '/project/list', component: projectList, name: '项目列表', menuShow: true},
+        {path: '/worklog/list', component: WorkLogList, name: '项目工时列表', menuShow: true},
       ]
     },
-    // {
-      // path: '/',
-      // component: Home,
-      // name: '设置',
-      // menuShow: true,
-      // iconCls: 'iconfont icon-setting1',
-      // children: [
-        // {path: '/user/profile', component: UserProfile, name: '个人信息', menuShow: true},
-        // {path: '/user/changepwd', component: UserChangePwd, name: '修改密码', menuShow: true}
-      // ]
-    // }
   ]
 })
 
