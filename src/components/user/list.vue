@@ -23,12 +23,12 @@
 		    </el-select>
 		  </el-form-item>
 		  <el-form-item label="日期" prop="dateRange">
-		  	<el-date-picker
-		      v-model.array="ruleForm.dateRange"
-		      type="daterange"
-		      :clearable="false"
-		      placeholder="选择日期范围">
-		    </el-date-picker>
+		    <el-date-picker
+			  v-model="ruleForm.dateRange"
+			  type="month"
+			  :clearable="false"
+			  placeholder="选择月">
+			</el-date-picker>
 		  </el-form-item>
 		  <el-form-item label="人员" prop="member">
 		    <el-select
@@ -73,7 +73,7 @@
       return {
         ruleForm: {
           projectInfo: '',
-          dateRange:[],
+          dateRange:'',
           member:'',
           workDays:'',
           type:'',
@@ -83,7 +83,7 @@
             { required: true, message: '请选择项目名称', trigger: 'blur' },
           ],
           dateRange: [
-            { required: true,type: 'array', message: '请填写时间', trigger: 'blur' },
+            { required: true, type: 'date', message: '请填写时间', trigger: 'blur' },
           ],
           member: [
             { required: true, message: '请选择人员', trigger: 'blur' },
@@ -101,6 +101,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let para = Object.assign({}, this.ruleForm);
+            para.dateRange = para.dateRange && para.dateRange.toJSON();
             this.$http.post('/api/project/createWorkLog', para).then((data) => {
 	          let datas=data.data;
 	          console.log(datas);

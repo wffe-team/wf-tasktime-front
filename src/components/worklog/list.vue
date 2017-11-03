@@ -1,5 +1,5 @@
 <template>
-  <el-row class="warp">
+  <el-row>
     <el-col :span="24" class="warp-breadcrum">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/' }"><b>首页</b></el-breadcrumb-item>
@@ -7,7 +7,15 @@
       </el-breadcrumb>
     </el-col>
     
-    <el-col>
+    <el-col :span="24" style="margin-top:20px;">
+      <el-date-picker
+	    v-model="searchData.time"
+	    type="month"
+	    placeholder="选择月">
+	  </el-date-picker>
+	  <el-button type="primary" @click="getWorkLogList(searchData)">查询</el-button>
+    </el-col>
+    <el-col :span="20" :offset="2" style="margin-top:20px;">
       <el-table
 	    :data="workLogList"
 	    border
@@ -18,7 +26,7 @@
 	      width="50">
 	    </el-table-column>
 	    <el-table-column
-	      prop=""
+	      prop="type"
 	      label="类型"
 	      width="50">
 	    </el-table-column>
@@ -30,6 +38,9 @@
 		        v-for="itemss in items.childProjects"
 		        prop=""
 		        :label="itemss.projectSecondName">
+		        <template scope="scope">
+		          <span v-show="itemss.projectSecondName==scope.row.projectInfo">{{scope.row.workDays}}</span>
+		        </template>
 		      </el-table-column>
 	      </el-table-column>
 	    </el-table-column>
@@ -45,6 +56,9 @@
       return {
         departmentList:[],
         workLogList:[],
+        searchData:{
+          time:'',
+        },
         tableData3: [{
           name: '王小虎',
           province: '上海',
@@ -73,16 +87,27 @@
           this.departmentList=datas;
     	});
       },
-      getWorkLogList(){
-        this.$http.get('/api/project/workLogList').then((data) => {
+      getWorkLogList(searchData){
+        let para = Object.assign({}, this.searchData);
+        let options = {
+            params: para
+        };
+        this.$http.get('/api/project/workLogList',options).then((data) => {
           let datas=data.data;
           this.workLogList=datas;
     	});
+      },
+      getCurrentDate(){
+        let currentDate=new Date();
+        let currentMonthStr=currentDate.getFullYear()+'-'+(currentDate.getMonth()+1);
+        currentDate=new Date(currentMonthStr);
+        this.searchData.time=currentDate;
+        this.getWorkLogList(this.searchData);
       }
     },
     mounted() {
       this.getDepartmentList();
-      this.getWorkLogList();
+      this.getCurrentDate();
     }
   }
 </script>

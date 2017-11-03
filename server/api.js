@@ -239,6 +239,7 @@ router.post('/api/project/createWorkLog',(req,res) => {
         projectInfo: req.body.projectInfo,
         dateRange: req.body.dateRange,
         workDays: req.body.workDays,
+        type: req.body.type,
     });
     console.log(newWorkLog);
     // 保存数据newWorkLog数据进mongoDB
@@ -337,9 +338,13 @@ router.get('/api/project/departmentList',(req,res) => {
 });
 //查询项目工时列表
 router.get('/api/project/workLogList',(req,res) => {
-	
+	let query={};
+	if(req.query.time){
+		query.dateRange=req.query.time;
+	}
+	console.log(query);
     // 通过模型去查找数据库
-    models.workLogs.find({},(err,data) => {
+    models.workLogs.find(query,(err,data) => {
         if (err) {
             res.json(err);
         } else {
