@@ -342,14 +342,14 @@ router.get('/api/project/workLogList',(req,res) => {
 	if(req.query.time){
 		query.dateRange=req.query.time;
 	}
-	console.log(query);
+	//console.log(query);
     // 通过模型去查找数据库
     models.workLogs.find(query,(err,data) => {
         if (err) {
             res.json(err);
         } else {
         	if(!!data){
-        		console.log(data);
+        		//console.log(data);
         		res.json(data);
         	}else{
         		res.json('none');

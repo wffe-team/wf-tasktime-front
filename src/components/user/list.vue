@@ -48,11 +48,10 @@
 		      v-model="ruleForm.type"
 		      filterable
 		      placeholder="请选择类型">
-		      <el-option
-		        key="正编"
-		        label="正编"
-		        value="正编">
-		      </el-option>
+		      <el-option key="正编" label="正编" value="正编"></el-option>
+		      <el-option key="试用期" label="试用期" value="试用期"></el-option>
+		      <el-option key="外聘劳务" label="外聘劳务" value="外聘劳务"></el-option>
+		      <el-option key="实习" label="实习" value="实习"></el-option>
 		    </el-select>
 		  </el-form-item>
 		  <el-form-item label="工时(天)" prop="workDays">
