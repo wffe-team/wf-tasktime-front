@@ -30,9 +30,9 @@
 			  placeholder="选择月">
 			</el-date-picker>
 		  </el-form-item>
-		  <el-form-item label="人员" prop="member">
+		  <el-form-item label="人员" prop="memberId">
 		    <el-select
-		      v-model="ruleForm.member"
+		      v-model="ruleForm.memberId"
 		      filterable
 		      placeholder="请选择人员">
 		      <el-option
@@ -74,6 +74,7 @@
           projectInfo: '',
           dateRange:'',
           member:'',
+          memberId:'',
           workDays:'',
           type:'',
         },
@@ -101,10 +102,13 @@
           if (valid) {
             let para = Object.assign({}, this.ruleForm);
             para.dateRange = para.dateRange && para.dateRange.toJSON();
+            this.userList.forEach(item=>{
+              item.value==para.memberId&&(para.member=item.label)
+            });
             this.$http.post('/api/project/createWorkLog', para).then((data) => {
-	          let datas=data.data;
-	          console.log(datas);
-	    	});
+    	        let datas=data.data;
+    	        console.log(datas);
+    	    	});
           } else {
             console.log('error submit!!');
             return false;
@@ -130,8 +134,8 @@
           let datas=data.data;
           datas.forEach(item=>{
             this.userList.push({
-              value:item,
-              label:item,
+              value:item.userId,
+              label:item.account,
             });
           });
     	});

@@ -94,10 +94,10 @@
         this.$refs.form.validate((valid) => {
           if (valid) {
             let para = Object.assign({}, this.form);
-	        this.$http.post('/api/project/createDepartment', para).then((data) => {
-	          let datas=data.data;
-	          console.log(datas);
-	    	});
+  	        this.$http.post('/api/project/createDepartment', para).then((data) => {
+  	          let datas=data.data;
+  	          console.log(datas);
+  	    	  });
           } else {
             console.log('error submit!!');
             return false;

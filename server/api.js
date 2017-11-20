@@ -11,10 +11,7 @@ router.post('/api/login/createAccount',(req,res) => {
     let newAccount = new models.members({
         account : req.body.account,
         password : req.body.password,
-        time: 123,
-        realName: 'asdasd',
-        asd: 1312,
-        userId: 'userId'
+        userId: req.body.userId
     });
     console.log(newAccount);
     // 保存数据newAccount数据进mongoDB
@@ -123,7 +120,7 @@ router.put('/api/project/changeProject',(req,res) => {
 //查询用户列表
 router.get('/api/user/getUserList',(req,res) => {
     // 通过模型去查找数据库
-    models.members.distinct('account',(err,data) => {
+    models.members.find({},(err,data) => {
         if (err) {
             res.json(err);
             console.log(err);
