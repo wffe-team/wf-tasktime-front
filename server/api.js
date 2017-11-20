@@ -13,7 +13,7 @@ router.post('/api/login/createAccount',(req,res) => {
         password : req.body.password,
         userId: req.body.userId
     });
-    console.log(newAccount);
+    //console.log(newAccount);
     // 保存数据newAccount数据进mongoDB
     newAccount.save((err,data) => {
         if (err) {
