@@ -93,47 +93,6 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.login-container {
-    background-color: rgba(255, 255, 255, 0);
-    margin: 160px auto;
-    width: 300px;
-    padding: 35px 35px 15px 35px;
-    background: #fff;
-    overflow: hidden;
-    -moz-box-shadow: 6px 4px 30px #98a4be; /* 老的 Firefox */
-    box-shadow: 6px 4px 30px #98a4be;
-}
+<style scoped lang="scss">
 
-.title {
-    margin: 0px auto 20px auto;
-    text-align: center;
-    height: 27px;
-    color: #505458;
-    font-weight: bold;
-}
-
-.remember {
-    margin: 0px 6px 35px 0px;
-}
-
-html {
-    width: 100%;
-    height: 100%;
-}
-
-body {
-    width: 100%;
-    height: 100%;
-}
-
-.bodyCss {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-
-.font_12px {
-    font-size: 12px;
-}
 </style>

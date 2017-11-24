@@ -149,8 +149,6 @@
   }
 </script>
 
-<style scoped>
-.el-select{
-  float:left;
-}
+<style scoped lang="scss">
+
 </style>

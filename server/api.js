@@ -233,6 +233,7 @@ router.get('/api/project/getProjectSecond',(req,res) => {
 router.post('/api/project/createWorkLog',(req,res) => {
 	let newWorkLog = new models.workLogs({
         member: req.body.member,
+        memberId: req.body.memberId,
         projectInfo: req.body.projectInfo,
         dateRange: req.body.dateRange,
         workDays: req.body.workDays,

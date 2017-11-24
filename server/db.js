@@ -49,8 +49,9 @@ var mandaySchema = new mongoose.Schema(
 var workLogSchema = new mongoose.Schema(
     {
         id: mongoose.Schema.Types.ObjectId,
-        member: [mongoose.Schema.Types.Mixed],
-        projectInfo: [mongoose.Schema.Types.Mixed],
+        member: String,
+        memberId: String,
+        projectInfo: String,
         dateRange: '',
         workDays: Number,
         type:String       

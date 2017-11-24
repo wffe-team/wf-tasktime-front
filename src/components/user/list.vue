@@ -148,8 +148,6 @@
   }
 </script>
 
-<style scoped>
-.el-select,.el-input{
-  float:left;
-}
+<style scoped lang="scss">
+
 </style>

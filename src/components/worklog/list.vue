@@ -112,27 +112,6 @@
   }
 </script>
 
-<style scoped>
-.el-select{
-  float:left;
-}
-.tab {
-    width: 99.99%;
-    border-collapse: collapse;
-    text-align: center;
-}
-.tab thead tr th {
-    text-align: left;
-    padding-left: 20px;
-}
-.tab tr {
-    height: 46px;
-}
-.tab th,.tab td {
-    position: relative;
-    border: #DBDBDB solid 1px;
-}
-.tab th {
-    background-color: #EBEBEB;
-}
+<style scoped lang="scss">
+
 </style>
