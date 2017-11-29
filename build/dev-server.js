@@ -48,13 +48,26 @@ const hotMiddleware = require('webpack-hot-middleware')(compiler, {
 app.use(hotMiddleware)
 
 // proxy api requests
-Object.keys(proxyTable).forEach(function (context) {
-  let options = proxyTable[context]
-  if (typeof options === 'string') {
-    options = { target: options }
-  }
-  app.use(proxyMiddleware(options.filter || context, options))
-})
+// Object.keys(proxyTable).forEach(function (context) {
+//   let options = proxyTable[context]
+//   if (typeof options === 'string') {
+//     options = { target: options }
+//   }
+//   app.use(proxyMiddleware(options.filter || context, options))
+// })
+
+var context = config.dev.context
+switch(process.env.NODE_ENV){
+    case 'development': var proxypath = 'http://localhost:8001'; break;
+    //case 'production': var proxypath = 'http://cangdu.org:8001'; break;
+}
+var options = {
+    target: proxypath,
+    changeOrigin: true,
+}
+if (context.length) {
+    app.use(proxyMiddleware(context, options))
+}
 
 // handle fallback for HTML5 history API
 app.use(require('connect-history-api-fallback')())

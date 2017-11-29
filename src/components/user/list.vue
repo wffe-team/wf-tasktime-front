@@ -2,67 +2,68 @@
   <el-row class="warp">
     <el-col :span="24" class="warp-breadcrum">
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item :to="{ path: '/' }"><b>首页</b></el-breadcrumb-item>
         <el-breadcrumb-item>个人工时记录</el-breadcrumb-item>
       </el-breadcrumb>
     </el-col>
 
-    <el-col :span="12" style="margin-top:20px;">
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-		  <el-form-item label="项目" prop="projectInfo">
-		    <el-select
-		      v-model="ruleForm.projectInfo"
-		      filterable
-		      placeholder="请选择项目">
-		      <el-option
-		        v-for="item in projectList"
-		        :key="item.value"
-		        :label="item.label"
-		        :value="item.value">
-		      </el-option>
-		    </el-select>
-		  </el-form-item>
-		  <el-form-item label="日期" prop="dateRange">
-		    <el-date-picker
-			  v-model="ruleForm.dateRange"
-			  type="month"
-			  :clearable="false"
-			  placeholder="选择月">
-			</el-date-picker>
-		  </el-form-item>
-		  <el-form-item label="人员" prop="memberId">
-		    <el-select
-		      v-model="ruleForm.memberId"
-		      filterable
-		      placeholder="请选择人员">
-		      <el-option
-		        v-for="item in userList"
-		        :key="item.value"
-		        :label="item.label"
-		        :value="item.value">
-		      </el-option>
-		    </el-select>
-		  </el-form-item>
-		  <el-form-item label="人员类型" prop="type">
-		    <el-select
-		      v-model="ruleForm.type"
-		      filterable
-		      placeholder="请选择类型">
-		      <el-option key="正编" label="正编" value="正编"></el-option>
-		      <el-option key="试用期" label="试用期" value="试用期"></el-option>
-		      <el-option key="外聘劳务" label="外聘劳务" value="外聘劳务"></el-option>
-		      <el-option key="实习" label="实习" value="实习"></el-option>
-		    </el-select>
-		  </el-form-item>
-		  <el-form-item label="工时(天)" prop="workDays">
-		    <el-input v-model.number="ruleForm.workDays" placeholder="请输入工时"></el-input>
-		  </el-form-item>
-		  <el-form-item>
-		    <el-button type="primary" @click="submitForm('ruleForm')">确定</el-button>
-		    <el-button @click="resetForm('ruleForm')">重置</el-button>
-		  </el-form-item>
-		</el-form>
-    </el-col>
+    <el-card class="box-card">
+      <el-col :span="18" :offset="3">
+        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="ruleForm">
+          <el-form-item label="项目" prop="projectInfo">
+            <el-select
+              v-model="ruleForm.projectInfo"
+              filterable
+              placeholder="请选择项目">
+              <el-option
+                v-for="item in projectList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="日期" prop="dateRange">
+            <el-date-picker
+              v-model="ruleForm.dateRange"
+              type="month"
+              :clearable="false"
+              placeholder="选择月">
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item label="人员" prop="memberId">
+            <el-select
+              v-model="ruleForm.memberId"
+              filterable
+              placeholder="请选择人员">
+              <el-option
+                v-for="item in userList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="人员类型" prop="type">
+            <el-select
+              v-model="ruleForm.type"
+              filterable
+              placeholder="请选择类型">
+              <el-option key="正编" label="正编" value="正编"></el-option>
+              <el-option key="试用期" label="试用期" value="试用期"></el-option>
+              <el-option key="外聘劳务" label="外聘劳务" value="外聘劳务"></el-option>
+              <el-option key="实习" label="实习" value="实习"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="工时(天)" prop="workDays">
+            <el-input class="input" v-model.number="ruleForm.workDays" placeholder="请输入工时"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submitForm('ruleForm')">确定</el-button>
+            <el-button @click="resetForm('ruleForm')">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </el-col>
+    </el-card>
   </el-row>
 </template>
 
@@ -106,7 +107,7 @@
               item.value==para.memberId&&(para.member=item.label)
             });
             this.$http.post('/api/project/createWorkLog', para).then((data) => {
-    	        let datas=data.data;
+    	        let datas=data.data.data;
     	        console.log(datas);
     	    	});
           } else {
@@ -119,8 +120,8 @@
         this.$refs[formName].resetFields();
       },
       getProjectList(){
-        this.$http.get('/api/project/getProjectSecond').then((data) => {
-          let datas=data.data;
+        this.$http.get('/api/department/getProjectSecond').then((data) => {
+          let datas=data.data.data;
           datas.forEach(item=>{
             this.projectList.push({
               value:item,
@@ -131,7 +132,7 @@
       },
       getUserList(){
         this.$http.get('/api/user/getUserList').then((data) => {
-          let datas=data.data;
+          let datas=data.data.data;
           datas.forEach(item=>{
             this.userList.push({
               value:item.userId,
