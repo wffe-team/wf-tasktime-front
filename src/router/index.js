@@ -1,22 +1,27 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '@/components/Login'
-import Home from '@/components/Home'
-import Dashboard from '@/components/Dashboard'
+//import Login from '@/components/Login'
+//import Home from '@/components/Home'
+//import Dashboard from '@/components/Dashboard'
 
-import UserList from '@/components/user/list'
-import projectList from '@/components/project/list'
-import WorkLogList from '@/components/worklog/list'
+//import UserList from '@/components/user/list'
+//import ProjectList from '@/components/project/list'
+//import WorkLogList from '@/components/worklog/list'
 Vue.use(Router)
+
+const Home = r=> require.ensure([], () => r(require('@/components/Home')), 'Home');
+const UserList = r => require.ensure([], () => r(require('@/components/user/list')), 'UserList');
+const ProjectList = r => require.ensure([], () => r(require('@/components/project/list')), 'ProjectList');
+const WorkLogList = r => require.ensure([], () => r(require('@/components/worklog/list')), 'WorkLogList');
 
 let router = new Router({
   //mode: 'history',
   routes: [
-    {
-      path: '/login',
-      name: '登录',
-      component: Login
-    },
+    // {
+    //   path: '/login',
+    //   name: '登录',
+    //   component: Login
+    // },
     // {
     //   path: '/',
     //   name: 'home',
@@ -58,7 +63,7 @@ let router = new Router({
       children: [
         {
           path: '/project/list', 
-          component: projectList, 
+          component: ProjectList, 
           name: '部门产品管理',
         },
       ]

@@ -70,9 +70,7 @@ export default {
 	            this.$http.post('/api/login/getAccount', para).then((data) => {
 	                let dataSet = data.data;
 	                if(dataSet=='none'){
-                    para.userId = that.guid();
-                    console.log(that.guid());
-                    console.log(para);
+                        para.userId = that.guid();
 	                	this.$http.post('/api/login/createAccount', para).then((data) => {
 	                		localStorage.setItem('access-user', JSON.stringify(data.data));
 	                		this.logining = false;
