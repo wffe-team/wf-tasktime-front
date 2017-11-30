@@ -17,38 +17,50 @@ let router = new Router({
       name: '登录',
       component: Login
     },
+    // {
+    //   path: '/',
+    //   name: 'home',
+    //   component: Home,
+    //   redirect: '/dashboard',
+    //   leaf: true, // 只有一个节点
+    //   menuShow: true,
+    //   iconCls: 'iconfont icon-home', // 图标样式class
+    //   children: [
+    //     {path: '/dashboard', component: Dashboard, name: '项目列表', menuShow: true}
+    //   ]
+    // },
     {
       path: '/',
-      name: 'home',
       component: Home,
-      redirect: '/dashboard',
-      leaf: true, // 只有一个节点
-      menuShow: true,
-      iconCls: 'iconfont icon-home', // 图标样式class
+      redirect: '/worklog/list',
       children: [
-        {path: '/dashboard', component: Dashboard, name: '项目列表', menuShow: true}
+        {
+          path: '/worklog/list', 
+          component: WorkLogList, 
+          name: '总工时统计表',
+        }
       ]
     },
     {
       path: '/',
       component: Home,
-      name: '用户管理',
-      menuShow: true,
-      leaf: true, // 只有一个节点
-      iconCls: 'iconfont icon-users', // 图标样式class
       children: [
-        {path: '/user/list', component: UserList, name: '个人工时', menuShow: true}
+        {
+          path: '/user/list', 
+          component: UserList, 
+          name: '个人工时记录', 
+        }
       ]
     },
     {
       path: '/',
       component: Home,
-      name: '项目管理',
-      menuShow: true,
-      iconCls: 'iconfont icon-books',
       children: [
-        {path: '/project/list', component: projectList, name: '项目列表', menuShow: true},
-        {path: '/worklog/list', component: WorkLogList, name: '项目工时列表', menuShow: true},
+        {
+          path: '/project/list', 
+          component: projectList, 
+          name: '部门产品管理',
+        },
       ]
     },
   ]

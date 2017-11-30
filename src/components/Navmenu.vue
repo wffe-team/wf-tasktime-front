@@ -1,15 +1,21 @@
 <template>
     <div>
-        <el-menu default-active="/dashboard"
+        <el-menu default-active="/worklog/list"
                 class="el-menu-vertical-demo"
                 @select="handleSelect">
-            <el-menu-item index="/dashboard">
+            <!-- <el-menu-item index="/dashboard">
                 <span slot="title">项目列表</span>
-            </el-menu-item>    
-            <el-menu-item index="/user/list">
-                <span slot="title">用户管理</span>
+            </el-menu-item>     -->
+            <el-menu-item index="/worklog/list">
+                <span slot="title">总工时统计表</span>
             </el-menu-item>
-            <el-submenu index="">
+            <el-menu-item index="/user/list">
+                <span slot="title">个人工时记录</span>
+            </el-menu-item>
+            <el-menu-item index="/project/list">
+                <span slot="title">部门产品管理</span>
+            </el-menu-item>
+            <!-- <el-submenu index="">
                 <template slot="title">
                     管项目理
                 </template>
@@ -21,7 +27,7 @@
                             项目工时列表
                     </el-menu-item>
                 </el-menu-item-group>
-            </el-submenu>
+            </el-submenu> -->
         </el-menu>
     </div>
 </template>

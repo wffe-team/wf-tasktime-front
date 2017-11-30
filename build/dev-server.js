@@ -58,7 +58,7 @@ app.use(hotMiddleware)
 
 var context = config.dev.context
 switch(process.env.NODE_ENV){
-    case 'development': var proxypath = 'http://localhost:8001'; break;
+    case 'development': var proxypath = 'http://10.20.17.152:8001'; break;
     //case 'production': var proxypath = 'http://cangdu.org:8001'; break;
 }
 var options = {

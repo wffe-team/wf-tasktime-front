@@ -10,7 +10,7 @@
       <el-col :span="18" :offset="3">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="ruleForm">
           <el-form-item label="项目" prop="projectInfo">
-            <el-select
+            <!-- <el-select
               v-model="ruleForm.projectInfo"
               filterable
               placeholder="请选择项目">
@@ -20,7 +20,16 @@
                 :label="item.label"
                 :value="item.value">
               </el-option>
-            </el-select>
+            </el-select> -->
+
+            <el-cascader
+              v-model="ruleForm.projectInfo"
+              :options="departmentList"
+              :show-all-levels="false"
+              @active-item-change="handleItemChange"
+              :props="props"
+            ></el-cascader>
+
           </el-form-item>
           <el-form-item label="日期" prop="dateRange">
             <el-date-picker
@@ -81,7 +90,7 @@
         },
         rules: {
           projectInfo: [
-            { required: true, message: '请选择项目名称', trigger: 'blur' },
+            { required: true, type: 'array', message: '请选择项目名称', trigger: 'blur' },
           ],
           dateRange: [
             { required: true, type: 'date', message: '请填写时间', trigger: 'blur' },
@@ -94,10 +103,52 @@
 	      ]
         },
         projectList:[],
+        departmentList:[],
+        projectFirstList:[],
+        projectSecondList:[],
         userList:[],
+        props: {
+          value: 'label',
+          children: 'children'
+        }
       }
     },
     methods: {
+      findIndex(list,val){
+        let len=list.length;
+        for(let i=0;i<len;i++){
+          if(list[i].label==val){
+            return i;
+          }
+        }
+        return -1;
+      },
+      handleItemChange(val){
+        if(val.length==1){
+          this.$http.get('/api/department/getProjectFirst?department='+val[0]).then((data) => {
+            let datas=data.data.data;
+            this.projectFirstList=[];
+            datas.forEach(item=>{
+              this.projectFirstList.push({
+                children:[],
+                label:item,
+              });
+            });
+            this.departmentList[this.findIndex(this.departmentList,val)].children=this.projectFirstList;
+          });
+        }else if(val.length==2){
+          this.$http.get('/api/department/getProjectSecond?department='+val[0]+'&projectFirstName='+val[1]).then((data) => {
+            let datas=data.data.data;
+            this.projectSecondList=[];
+            datas.forEach(item=>{
+              this.projectSecondList.push({
+                label:item,
+              });
+            });
+            this.departmentList[this.findIndex(this.departmentList,val[0])].children[this.findIndex(this.projectFirstList,val[1])].children=this.projectSecondList;
+          });
+        }
+      },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -106,7 +157,9 @@
             this.userList.forEach(item=>{
               item.value==para.memberId&&(para.member=item.label)
             });
-            this.$http.post('/api/project/createWorkLog', para).then((data) => {
+            para.projectInfo=para.projectInfo.pop();
+            console.log(para);
+            this.$http.post('/api/worklog/createWorkLog', para).then((data) => {
     	        let datas=data.data.data;
     	        console.log(datas);
     	    	});
@@ -119,6 +172,17 @@
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
+      getDepartmentList(){
+        this.$http.get('/api/department/getDepartment').then((data) => {
+          let datas=data.data.data;
+          datas.forEach(item=>{
+            this.departmentList.push({
+              children:[],
+              label:item,
+            });
+          });
+    	  });
+      },
       getProjectList(){
         this.$http.get('/api/department/getProjectSecond').then((data) => {
           let datas=data.data.data;
@@ -128,7 +192,7 @@
               label:item,
             });
           });
-    	});
+    	  });
       },
       getUserList(){
         this.$http.get('/api/user/getUserList').then((data) => {
@@ -145,6 +209,7 @@
     mounted() {
       this.getProjectList();
       this.getUserList();
+      this.getDepartmentList();
     }
   }
 </script>

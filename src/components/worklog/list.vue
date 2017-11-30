@@ -2,7 +2,7 @@
   <el-row>
     <el-col :span="24" class="warp-breadcrum">
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item>项目管理</el-breadcrumb-item>
+        <el-breadcrumb-item>总工时统计表</el-breadcrumb-item>
       </el-breadcrumb>
     </el-col>
 
@@ -22,11 +22,13 @@
           style="width: 100%">
           <el-table-column
             prop="member"
+            fixed
             label="人员"
             width="50">
           </el-table-column>
           <el-table-column
             prop="type"
+            fixed
             label="类型"
             width="50">
           </el-table-column>
@@ -60,30 +62,11 @@
         searchData:{
           time:'',
         },
-        tableData3: [{
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }]
       }
     },
     methods: {
       getDepartmentList(){
-        this.$http.get('/api/department/getDepartment').then((data) => {
+        this.$http.get('/api/department/departmentRelationList').then((data) => {
           let datas=data.data.data;
           this.departmentList=datas;
     	});
@@ -93,7 +76,7 @@
         let options = {
             params: para
         };
-        this.$http.get('/api/department/departmentRelationList',options).then((data) => {
+        this.$http.get('/api/worklog/getWorkLog',options).then((data) => {
           let datas=data.data.data;
           this.workLogList=datas;
     	});

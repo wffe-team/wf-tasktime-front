@@ -2,7 +2,7 @@
   <el-row class="warp">
     <el-col :span="24" class="warp-breadcrum">
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item>项目管理</el-breadcrumb-item>
+        <el-breadcrumb-item>部门产品管理</el-breadcrumb-item>
       </el-breadcrumb>
     </el-col>
 
@@ -99,7 +99,7 @@
         this.$refs.form.validate((valid) => {
           if (valid) {
             let para = Object.assign({}, this.form);
-  	        this.$http.post('/api/project/createDepartment', para).then((data) => {
+  	        this.$http.post('/api/department/createDepartment', para).then((data) => {
   	          let datas=data.data.data;
   	          console.log(datas);
   	    	  });
@@ -111,7 +111,7 @@
       },
       getProjectFirst(){
         let departmentName=this.form.departmentName;
-        this.$http.get('/api/project/getProjectFirst?department='+departmentName).then((data) => {
+        this.$http.get('/api/department/getProjectFirst?department='+departmentName).then((data) => {
           let datas=data.data.data;
           this.projectFirstList=[];
           datas.forEach(item=>{
@@ -120,12 +120,12 @@
               label:item,
             });
           });
-    	});
+    	  });
       },
       getProjectSecond(){
         let departmentName=this.form.departmentName;
         let projectFirstName=this.form.projectFirstName;
-        this.$http.get('/api/project/getProjectSecond?department='+departmentName+'&projectFirstName='+projectFirstName).then((data) => {
+        this.$http.get('/api/department/getProjectSecond?department='+departmentName+'&projectFirstName='+projectFirstName).then((data) => {
           let datas=data.data.data;
           this.projectSecondList=[];
           datas.forEach(item=>{
