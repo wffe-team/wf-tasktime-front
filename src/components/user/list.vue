@@ -1,8 +1,8 @@
 <template>
   <el-row class="warp">
     <el-col :span="24" class="warp-breadcrum">
-      <el-breadcrumb separator="/">
-        <el-breadcrumb-item>个人工时记录</el-breadcrumb-item>
+      <el-breadcrumb separator=">" class="navCss">
+          <el-breadcrumb-item>个人工时记录</el-breadcrumb-item>
       </el-breadcrumb>
     </el-col>
 
@@ -81,7 +81,7 @@
     data() {
       return {
         ruleForm: {
-          projectInfo: '',
+          projectInfo: [],
           dateRange:'',
           member:'',
           memberId:'',
@@ -99,8 +99,8 @@
             { required: true, message: '请选择人员', trigger: 'blur' },
           ],
           workDays:[
-	        { required: true, type: 'number', message: '请填写纯数字工时', trigger: 'blur'},
-	      ]
+	          { required: true, type: 'number', message: '请填写纯数字工时', trigger: 'blur'},
+	        ]
         },
         projectList:[],
         departmentList:[],

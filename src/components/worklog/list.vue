@@ -1,8 +1,8 @@
 <template>
   <el-row>
     <el-col :span="24" class="warp-breadcrum">
-      <el-breadcrumb separator="/">
-        <el-breadcrumb-item>总工时统计表</el-breadcrumb-item>
+      <el-breadcrumb separator=">" class="navCss">
+          <el-breadcrumb-item>总工时统计表</el-breadcrumb-item>
       </el-breadcrumb>
     </el-col>
 
@@ -17,7 +17,7 @@
       </el-col>
       <el-col :span="24" class="tableBox">
         <el-table
-          :data="workLogList"
+          :data="workLogHashList"
           border
           style="width: 100%">
           <el-table-column
@@ -32,17 +32,21 @@
             label="类型"
             width="50">
           </el-table-column>
-          <el-table-column v-for="item in departmentList" :label="item.departmentName">
+          <el-table-column v-for="item in departmentList" :key="item.departmentName" :label="item.departmentName">
             <el-table-column
               v-for="items in item.childProjects"
+              :key="items.projectFirstName"
               :label="items.projectFirstName">
                 <el-table-column
-                v-for="itemss in items.childProjects"
-                prop=""
-                :label="itemss.projectSecondName">
-                <template scope="scope">
-                  <span v-show="itemss.projectSecondName==scope.row.projectInfo">{{scope.row.workDays}}</span>
-                </template>
+                  v-for="(itemss,index) in items.childProjects"
+                  prop=""
+                  :key="itemss.projectSecondName"
+                  :label="itemss.projectSecondName">
+                  <template scope="scope">
+                    <span 
+                      v-show="checkName(itemss.projectSecondName,scope.row.projectInfoList)!=-1"
+                      >{{scope.row.projectInfoList[index]&&scope.row.projectInfoList[index].workDays}}</span>
+                  </template>
               </el-table-column>
             </el-table-column>
           </el-table-column>
@@ -59,12 +63,31 @@
       return {
         departmentList:[],
         workLogList:[],
+        workLogHashList:[],
         searchData:{
           time:'',
         },
       }
     },
     methods: {
+      check(arr,item){
+        let i = 0;
+        let len = arr.length;
+        for(i;i<len;i++){
+          if(arr[i].memberId==item.memberId){
+            return i;
+          }
+        }
+        return -1;
+      },
+      checkName(name,list){
+        for(var i=0;i<list.length;i++){
+          if(list[i].projectInfo==name){
+            return i;
+          }
+        }
+        return -1;
+      },
       getDepartmentList(){
         this.$http.get('/api/department/departmentRelationList').then((data) => {
           let datas=data.data.data;
@@ -79,7 +102,24 @@
         this.$http.get('/api/worklog/getWorkLog',options).then((data) => {
           let datas=data.data.data;
           this.workLogList=datas;
-    	});
+
+          this.workLogList.forEach(item=>{
+          	let index=this.check(this.workLogHashList,item);
+          	if(index!=-1){
+          		this.workLogHashList[index].projectInfoList.push({
+          			projectInfo:item.projectInfo,
+          			workDays:item.workDays,
+          		})
+          	}else{
+          		this.workLogHashList.push(item);
+          		this.workLogHashList[this.workLogHashList.length-1].projectInfoList=[{
+                projectInfo:item.projectInfo,
+          			workDays:item.workDays,
+              }];
+          	}
+          });
+
+    	  });
       },
       getCurrentDate(){
         let currentDate=new Date();

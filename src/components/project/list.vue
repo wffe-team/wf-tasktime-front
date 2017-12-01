@@ -1,8 +1,8 @@
 <template>
   <el-row class="warp">
     <el-col :span="24" class="warp-breadcrum">
-      <el-breadcrumb separator="/">
-        <el-breadcrumb-item>部门产品管理</el-breadcrumb-item>
+      <el-breadcrumb separator=">" class="navCss">
+          <el-breadcrumb-item>部门产品管理</el-breadcrumb-item>
       </el-breadcrumb>
     </el-col>
 
@@ -145,7 +145,7 @@
               label:item,
             });
           });
-    	});
+    	  });
       },
     },
     mounted() {

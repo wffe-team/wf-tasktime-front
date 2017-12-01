@@ -15,7 +15,7 @@ const ProjectList = r => require.ensure([], () => r(require('@/components/projec
 const WorkLogList = r => require.ensure([], () => r(require('@/components/worklog/list')), 'WorkLogList');
 
 let router = new Router({
-  //mode: 'history',
+  mode: 'history',
   routes: [
     // {
     //   path: '/login',
@@ -73,17 +73,18 @@ let router = new Router({
 
 router.beforeEach((to, from, next) => {
   // console.log('to:' + to.path)
-  if (to.path.startsWith('/login')) {
-    window.localStorage.removeItem('access-user')
-    next()
-  } else {
-    let user = JSON.parse(window.localStorage.getItem('access-user'))
-    if (!user) {
-      next({path: '/login'})
-    } else {
-      next()
-    }
-  }
+  // if (to.path.startsWith('/login')) {
+  //   window.localStorage.removeItem('access-user')
+  //   next()
+  // } else {
+  //   let user = JSON.parse(window.localStorage.getItem('access-user'))
+  //   if (!user) {
+  //     next({path: '/login'})
+  //   } else {
+  //     next()
+  //   }
+  // }
+  next();
 })
 
 export default router
