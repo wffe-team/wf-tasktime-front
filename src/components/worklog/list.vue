@@ -50,6 +50,18 @@
               </el-table-column>
             </el-table-column>
           </el-table-column>
+          <el-table-column
+            prop="totalTime"
+            fixed="right"
+            label="个人工时总计"
+            width="50">
+          </el-table-column>
+          <el-table-column
+            prop="remarks"
+            fixed="right"
+            label="任务说明"
+            width="50">
+          </el-table-column>
         </el-table>
       </el-col>
     </el-card>
@@ -92,7 +104,7 @@
         this.$http.get('/api/department/departmentRelationList').then((data) => {
           let datas=data.data.data;
           this.departmentList=datas;
-    	});
+    	  });
       },
       getWorkLogList(searchData){
         let para = Object.assign({}, this.searchData);
@@ -104,18 +116,23 @@
           this.workLogList=datas;
 
           this.workLogList.forEach(item=>{
-          	let index=this.check(this.workLogHashList,item);
+            let index=this.check(this.workLogHashList,item);
+            
           	if(index!=-1){
           		this.workLogHashList[index].projectInfoList.push({
           			projectInfo:item.projectInfo,
           			workDays:item.workDays,
-          		})
+              })
+              this.workLogHashList[this.workLogHashList.length-1].totalTime+=item.workDays;
+              this.workLogHashList[this.workLogHashList.length-1].remarks+=item.remarks;
           	}else{
           		this.workLogHashList.push(item);
           		this.workLogHashList[this.workLogHashList.length-1].projectInfoList=[{
                 projectInfo:item.projectInfo,
           			workDays:item.workDays,
               }];
+              this.workLogHashList[this.workLogHashList.length-1].totalTime=item.workDays;
+              this.workLogHashList[this.workLogHashList.length-1].remarks=item.remarks||'';
           	}
           });
 

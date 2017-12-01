@@ -66,6 +66,9 @@
           <el-form-item label="工时(天)" prop="workDays">
             <el-input class="input" v-model.number="ruleForm.workDays" placeholder="请输入工时"></el-input>
           </el-form-item>
+          <el-form-item label="任务说明" prop="remarks">
+            <el-input type="textarea" class="input" v-model.number="ruleForm.remarks" placeholder="请输入任务说明"></el-input>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('ruleForm')">确定</el-button>
             <el-button @click="resetForm('ruleForm')">重置</el-button>
@@ -87,6 +90,7 @@
           memberId:'',
           workDays:'',
           type:'',
+          remarks:'',
         },
         rules: {
           projectInfo: [
