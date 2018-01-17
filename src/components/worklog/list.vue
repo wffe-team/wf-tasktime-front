@@ -24,13 +24,22 @@
             prop="member"
             fixed
             label="人员"
-            width="50">
+            width="70">
           </el-table-column>
           <el-table-column
             prop="type"
             fixed
             label="类型"
-            width="50">
+            width="70">
+          </el-table-column>
+          <el-table-column
+            prop=""
+            fixed
+            label="年月"
+            width="100">
+            <template slot-scope="scope">
+              <span>{{scope.row.dateRange|dateFormat('yyyy-MM')}}</span>
+            </template>
           </el-table-column>
           <el-table-column v-for="item in departmentList" :key="item.departmentName" :label="item.departmentName">
             <el-table-column
