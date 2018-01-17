@@ -165,7 +165,12 @@
             console.log(para);
             this.$http.post('/api/worklog/createWorkLog', para).then((data) => {
     	        let datas=data.data.data;
-    	        console.log(datas);
+              console.log(datas);
+              this.$message({
+                  message: '操作成功',
+                  type: 'success'
+              });
+              this.$refs[formName].resetFields();
     	    	});
           } else {
             console.log('error submit!!');

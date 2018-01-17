@@ -42,10 +42,10 @@
                   prop=""
                   :key="itemss.projectSecondName"
                   :label="itemss.projectSecondName">
-                  <template scope="scope">
+                  <template slot-scope="scope">
                     <span 
                       v-show="checkName(itemss.projectSecondName,scope.row.projectInfoList)!=-1"
-                      >{{scope.row.projectInfoList[index]&&scope.row.projectInfoList[index].workDays}}</span>
+                      >{{scope.row.projectInfoList[checkName(itemss.projectSecondName,scope.row.projectInfoList)]&&scope.row.projectInfoList[checkName(itemss.projectSecondName,scope.row.projectInfoList)].workDays}}</span>
                   </template>
               </el-table-column>
             </el-table-column>
@@ -86,7 +86,7 @@
         let i = 0;
         let len = arr.length;
         for(i;i<len;i++){
-          if(arr[i].memberId==item.memberId){
+          if(arr[i].memberId==item.memberId&&arr[i].dateRange==item.dateRange){
             return i;
           }
         }
@@ -114,10 +114,12 @@
         this.$http.get('/api/worklog/getWorkLog',options).then((data) => {
           let datas=data.data.data;
           this.workLogList=datas;
-
+          this.workLogHashList=[];
+          let that=this;
           this.workLogList.forEach(item=>{
+            console.log(this.workLogHashList,item)
             let index=this.check(this.workLogHashList,item);
-            
+            console.log(index);
           	if(index!=-1){
           		this.workLogHashList[index].projectInfoList.push({
           			projectInfo:item.projectInfo,
@@ -133,9 +135,9 @@
               }];
               this.workLogHashList[this.workLogHashList.length-1].totalTime=item.workDays;
               this.workLogHashList[this.workLogHashList.length-1].remarks=item.remarks||'';
+              console.log(this.workLogHashList)
           	}
           });
-
     	  });
       },
       getCurrentDate(){
@@ -144,7 +146,7 @@
         currentDate=new Date(currentMonthStr);
         this.searchData.time=currentDate;
         this.getWorkLogList(this.searchData);
-      }
+      },
     },
     mounted() {
       this.getDepartmentList();

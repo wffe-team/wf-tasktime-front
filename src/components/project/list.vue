@@ -28,7 +28,7 @@
             </el-option>
           </el-select>
           </el-form-item>
-          <el-form-item label="一级项目">
+          <el-form-item label="一级项目" prop="projectFirstName">
             <el-select
             v-model="form.projectFirstName"
             filterable
@@ -43,7 +43,7 @@
             </el-option>
           </el-select>
           </el-form-item>
-          <el-form-item label="二级项目">
+          <el-form-item label="二级项目" prop="projectSecondName">
             <el-select
             v-model="form.projectSecondName"
             filterable
@@ -101,7 +101,11 @@
             let para = Object.assign({}, this.form);
   	        this.$http.post('/api/department/createDepartment', para).then((data) => {
   	          let datas=data.data.data;
-  	          console.log(datas);
+  	          this.$message({
+                  message: '操作成功',
+                  type: 'success'
+              });
+              this.$refs['form'].resetFields();
   	    	  });
           } else {
             console.log('error submit!!');

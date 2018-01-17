@@ -11,9 +11,6 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
-    "element-theme": "^0.7.2",
-    "element-theme-default": "^1.4.7",
-    "mongoose": "^4.12.3",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },
